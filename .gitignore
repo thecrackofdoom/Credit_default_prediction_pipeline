@@ -1,0 +1,9 @@
+*.pbix
+data/
+__pycache__/
+.DS_Store
+.ipynb_checkpoints/
+mlruns/
+*.log
+.env
+.databricks/
