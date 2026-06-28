@@ -1,19 +1,19 @@
 # Credit Default Risk Pipeline 🏦
 
-End-to-end credit risk modeling pipeline on **Databricks Lakehouse**, featuring a Bronze/Silver/Gold medallion architecture orchestrated via **Spark Declarative Pipelines (SDP)**, **MLflow** experiment tracking, **XGBoost + Logistic Regression** models, and **SHAP**-based interpretability — benchmarked against the original Yeh & Lien (2009) academic baseline.
+End-to-end credit default risk pipeline on **Databricks Lakehouse**, featuring a Bronze/Silver/Gold medallion architecture orchestrated via **Spark Declarative Pipelines (SDP)**, **MLflow** experiment tracking, **XGBoost + Logistic Regression** models, and **SHAP**-based interpretability — benchmarked against the original Yeh & Lien (2009) academic baseline.
 
-https://img.shields.io/badge/Databricks-FF3621?logo=databricks&logoColor=white
-https://img.shields.io/badge/PySpark-E25A1C?logo=apachespark&logoColor=white
-https://img.shields.io/badge/Delta_Lake-003366?logo=delta&logoColor=white
-https://img.shields.io/badge/MLflow-0194E2?logo=mlflow&logoColor=white
-https://img.shields.io/badge/XGBoost-EB5E28?logo=python&logoColor=white
-https://img.shields.io/badge/SHAP-5C2D91?logo=python&logoColor=white
+[![](https://img.shields.io/badge/Databricks-FF3621?logo=databricks&logoColor=white)]()
+[![](https://img.shields.io/badge/PySpark-E25A1C?logo=apachespark&logoColor=white)]()
+[![](https://img.shields.io/badge/Delta_Lake-003366?logo=delta&logoColor=white)]()
+[![](https://img.shields.io/badge/MLflow-0194E2?logo=mlflow&logoColor=white)]()
+[![](https://img.shields.io/badge/XGBoost-EB5E28?logo=python&logoColor=white)]()
+[![](https://img.shields.io/badge/SHAP-5C2D91?logo=python&logoColor=white)]()
 
 ---
 
 ## 📋 Table of Contents
 - #-overview
-- #️-architecture
+- #-architecture
 - #-key-results
 - #-pipeline-walkthrough
 - #-modeling-approach
@@ -45,11 +45,11 @@ The pipeline follows the **Lakehouse medallion pattern**, with each layer materi
 | **Silver** | Cleaned, categories consolidated, payment statuses normalized | Delta |
 | **Gold** | One-hot encoded, ML-ready features | Delta |
 | **MLflow** | Experiment tracking + Model Registry | — |
-| **Scored Output** | Predictions written back as Delta | Delta |
+
 
 **SDP Pipeline Graph:**
 
-docs/screenshots/sdp_pipeline.png
+![](docs/screenshots/sdp_pipeline.png)
 
 ---
 
@@ -59,22 +59,22 @@ docs/screenshots/sdp_pipeline.png
 
 | Model | AUC | KS | Gini | Recall (Default) @ 0.5 |
 |-------|------|------|------|------------------------|
-| Logistic Regression (baseline) | [0.XX] | [0.XX] | [0.XX] | [XX%] |
-| **XGBoost (Normal Sampling) ⭐** | **0.78** | **0.43** | **0.56** | **59%** |
-| XGBoost (Manual Oversampling) | [0.XX] | [0.XX] | [0.XX] | [XX%] |
-| XGBoost (SMOTE) | [0.XX] | [0.XX] | [0.XX] | [XX%] |
+| Logistic Regression (baseline) | 0.75 | 0.405 | 0.515 | 32% |
+| **XGBoost (Normal Sampling) ⭐** | **0.78** | **0.44** | **0.57** | **59%** |
+| XGBoost (Manual Oversampling) | 0.749 | 0.391 | 0.515 | 40% |
+| XGBoost (SMOTE) | 0.759 | 0.393 | 0.519 | 38% |
 
 > **Industry context:** KS > 0.30 is the typical retail credit scorecard validation threshold; KS = 0.43 is considered **strong**. Gini > 0.40 is standard for retail credit models.
 
-docs/screenshots/ks_gini_metrics.png
+![](docs/screenshots/ks_gini_metrics.png)
 
 ### Confusion Matrix + ROC (Best Model)
 
-docs/screenshots/confusion_mat_roc_best.png
+![](docs/screenshots/confusion_mat_roc_best.png)
 
 ### Sampling Strategy Tradeoff
 
-docs/screenshots/scatter_accuracy_vs_recall_default_rate.png
+![](docs/screenshots/scatter_accuracy_vs_recall_default_rate.png)
 
 > Sampling-based class balancing improves recall on defaults at the cost of overall accuracy and probability calibration. The normal sampling strategy with `scale_pos_weight=3` was selected as the final model because it preserves probability calibration — critical when the score itself is the deliverable.
 
@@ -131,19 +131,19 @@ Implementations are in src/metrics.py.
 ## 🔍 Interpretability
 
 ### Global Feature Importance (XGBoost Native)
-docs/screenshots/xgb_feature_importance.png
+![](docs/screenshots/xgb_feature_importance.png)
 
 ### SHAP Summary (Global)
-docs/screenshots/shap_feature_summary.png
+![](docs/screenshots/shap_feature_summary.png)
 
 ### Individual Prediction Explanations
 **Waterfall plot** — cascading feature contributions for a single applicant:
 
-docs/screenshots/shap_waterflow.png
+![](docs/screenshots/shap_waterflow.png)
 
 **Force plot** — additive decomposition from base value to prediction:
 
-docs/screenshots/shap_force_plot.png
+![](docs/screenshots/shap_force_plot.png)
 
 > **Note:** SHAP values for XGBoost are in **log-odds space**, not probability. They show *direction* and *relative magnitude* of feature contribution to the default log-odds.
 
