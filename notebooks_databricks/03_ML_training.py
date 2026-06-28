@@ -286,7 +286,7 @@ for X_train_data, y_train_data, strategy_name, params in zip(
 
 # DBTITLE 1,MLflow: Log Logistic Regression
 # Set MLflow experiment (uses workspace MLflow by default)
-mlflow.set_experiment("/Users/tranminhnguyen1106@gmail.com/Credit Default Prediction")
+mlflow.set_experiment("/Shared/Credit Default Prediction")
 
 # Log Logistic Regression baseline
 with mlflow.start_run(run_name="Logistic Regression (Baseline)"):
