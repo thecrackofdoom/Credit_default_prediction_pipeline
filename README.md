@@ -39,7 +39,7 @@ This project implements a production-style credit default prediction pipeline on
 
 ## 🏗️ Architecture
 
-docs/architecture.png
+![](docs/screenshots/architecture.png)
 
 The pipeline follows the **Lakehouse medallion pattern**, with each layer materialized as a Delta table and orchestrated by **Spark Declarative Pipelines (SDP)**:
 
